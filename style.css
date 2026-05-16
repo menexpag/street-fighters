@@ -1,0 +1,206 @@
+/* =====================================================
+   BLAZE FIGHT — Estilos globales
+   Estilo retro-arcade con paleta oscura y neón
+   ===================================================== */
+
+/* ── Fuentes ── */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@400;700&display=swap');
+
+/* ── Variables de diseño ── */
+:root {
+  --color-bg:         #0a0a0f;
+  --color-fire:       #ff4a00;
+  --color-fire-glow:  #ff8c00;
+  --color-elec:       #00cfff;
+  --color-elec-glow:  #7affff;
+  --color-gold:       #ffd700;
+  --color-white:      #f0f0ff;
+  --color-dark:       #12121a;
+  --color-panel:      rgba(10,10,20,0.92);
+  --font-pixel:       'Press Start 2P', monospace;
+  --font-hud:         'Rajdhani', sans-serif;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--color-bg);
+  overflow: hidden;
+  font-family: var(--font-pixel);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Wrapper principal ── */
+#game-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,74,0,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 100%, rgba(0,207,255,0.08) 0%, transparent 60%),
+    var(--color-bg);
+}
+
+/* ── Canvas ── */
+#gameCanvas {
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  /* Sombra de neón en el canvas */
+  box-shadow:
+    0 0 0 2px #222,
+    0 0 40px rgba(255,74,0,0.3),
+    0 0 80px rgba(0,207,255,0.2);
+}
+
+/* ── UI Overlay (pantallas HTML sobre el canvas) ── */
+#ui-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;   /* por defecto no intercepta clics */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Cuando hay una pantalla activa, sí captura eventos */
+#ui-overlay.active { pointer-events: all; }
+
+/* ── Pantalla genérica (menú, selección, victoria) ── */
+.screen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  background: var(--color-panel);
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── Títulos ── */
+.screen-title {
+  font-size: clamp(1.4rem, 4vw, 2.8rem);
+  color: var(--color-gold);
+  text-shadow:
+    0 0 10px var(--color-gold),
+    0 0 30px rgba(255,215,0,0.5);
+  text-align: center;
+  line-height: 1.6;
+  letter-spacing: 2px;
+}
+
+.screen-subtitle {
+  font-size: clamp(0.5rem, 1.5vw, 0.8rem);
+  color: var(--color-white);
+  opacity: 0.7;
+  text-align: center;
+  line-height: 2;
+}
+
+/* ── Botones arcade ── */
+.btn-arcade {
+  font-family: var(--font-pixel);
+  font-size: clamp(0.5rem, 1.4vw, 0.75rem);
+  color: var(--color-bg);
+  background: var(--color-gold);
+  border: none;
+  padding: 0.8em 2em;
+  cursor: pointer;
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+  transition: background 0.15s, transform 0.1s;
+  letter-spacing: 1px;
+  pointer-events: all;
+}
+.btn-arcade:hover  { background: #ffe55c; transform: scale(1.05); }
+.btn-arcade:active { transform: scale(0.97); }
+
+.btn-arcade.fire {
+  background: linear-gradient(135deg, var(--color-fire), var(--color-fire-glow));
+  color: #fff;
+  box-shadow: 0 0 20px var(--color-fire);
+}
+.btn-arcade.elec {
+  background: linear-gradient(135deg, var(--color-elec), var(--color-elec-glow));
+  color: #000;
+  box-shadow: 0 0 20px var(--color-elec);
+}
+
+/* ── Selección de personaje ── */
+.char-grid {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.char-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 1.5rem 2rem;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+  pointer-events: all;
+}
+.char-card:hover { transform: translateY(-4px); border-color: var(--color-gold); }
+.char-card.fire:hover  { border-color: var(--color-fire); }
+.char-card.elec:hover  { border-color: var(--color-elec); }
+
+.char-portrait {
+  width: 120px; height: 120px;
+  image-rendering: pixelated;
+}
+
+.char-name {
+  font-size: clamp(0.55rem, 1.2vw, 0.7rem);
+  color: var(--color-white);
+  letter-spacing: 2px;
+}
+
+.char-stats {
+  font-family: var(--font-hud);
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  line-height: 1.8;
+}
+
+/* ── Pantalla de Victoria ── */
+.winner-name {
+  font-size: clamp(1rem, 3vw, 1.8rem);
+  text-align: center;
+}
+.winner-name.fire { color: var(--color-fire); text-shadow: 0 0 20px var(--color-fire); }
+.winner-name.elec { color: var(--color-elec); text-shadow: 0 0 20px var(--color-elec); }
+
+/* ── Blink retro ── */
+.blink {
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* ── Responsive: móvil ── */
+@media (max-width: 600px) {
+  .char-grid { gap: 1.5rem; }
+  .char-card  { padding: 1rem; }
+  .char-portrait { width: 80px; height: 80px; }
+}
