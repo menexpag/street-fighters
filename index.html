@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BLAZE FIGHT — Arcade Fighter</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Contenedor principal del juego -->
+  <div id="game-wrapper">
+    <canvas id="gameCanvas"></canvas>
+    <!-- Overlay de UI (menú, selección, victoria) se renderiza sobre el canvas -->
+    <div id="ui-overlay"></div>
+  </div>
+
+  <!-- Scripts del juego en orden de dependencia -->
+  <script src="audio.js"></script>
+  <script src="physics.js"></script>
+  <script src="effects.js"></script>
+  <script src="player.js"></script>
+  <script src="enemy.js"></script>
+  <script src="ui.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
